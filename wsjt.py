@@ -4,9 +4,26 @@ import subprocess
 import requests
 import xml.etree.ElementTree as ET
 
-# Import the WSJT-X classes
-# https://github.com/rstagers/WSJT-X/blob/master/WSJTXClass.py
+# Import the WSJT-X classes https://github.com/rstagers/WSJT-X/blob/master/WSJTXClass.py
 from WSJTXClass import WSJTX_Packet, WSJTX_Heartbeat, WSJTX_Status, WSJTX_Decode, WSJTX_Erase, WSJTX_Reply, WSJTX_Logged, WSJTX_Closed, WSJTX_Replay, WSJTX_HaltTx, WSJTX_FreeText, WSJTX_WSPRDecode
+
+# WSJT multicast address and port. In WSJT go to: File, settings, reporting tab, change UDP server from 127.0.0.1 to 224.0.2.0. Select your network adapater in outgoing interfaces.
+WSJThost = "224.0.2.0"
+WSJTport = 2237 # No quote marks, this must be seen as an INT data type
+
+QRZlookupEnable = True
+QRZusername = "QRZuser"
+QRZpassword = "QRZpass"
+
+HAMclockEnable = True
+HAMclockHost = "192.168.3.52"
+HAMclockPort = "8080"
+
+WinKeyerEnable = True
+WinKeyerHost = "127.0.0.1"
+WinKeyerPort = 7373 # No quote marks, this must be seen as an INT data type
+WordSpeed = "25"
+CharacterSpeed = "25"
 
 # Function to decode packets
 def decode_packet(data):
@@ -43,9 +60,8 @@ def decode_packet(data):
     return pkt.__dict__
 
 def get_key():
-    username = "QRZuser"
-    password = "QRZpass"
-    url = f"https://xmldata.qrz.com/xml/current/?username={username};password={password}"
+
+    url = f"https://xmldata.qrz.com/xml/current/?username={QRZusername};password={QRZpassword}"
     response = requests.get(url)
     if response.status_code == 200:
         root = ET.fromstring(response.content)
@@ -90,13 +106,13 @@ def send_message(host, port, message):
 
 # Main function to receive and decode multicast packets
 def main():
-    multicast_group = '224.0.2.0'
-    server_address = ('', 2237)
+    multicast_group = WSJThost
+    server_address = ('', WSJTport)
 
     # Create the socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    
+
     # Bind to the server address
     sock.bind(server_address)
 
@@ -122,13 +138,15 @@ def main():
                 if call_worked != call:
                     call_worked = call
                     print(packet)
-                    #send_message('127.0.0.1', 7373, f"2525{call} {call} {call} ")
-                    if len(grid) < 4:
-                        grid = get_grid_square(call)
-                        print(f"QRZ grid: {grid}")
-                    if len(grid) >= 4:                        
-                        url = f"http://192.168.3.52:8080/set_newdx?grid={grid}"
-                        subprocess.Popen(['curl', url])
+                    if WinKeyerEnable:
+                        send_message(WinKeyerHost, WinKeyerPort, f"{WordSpeed}{CharacterSpeed} {call} {call} {call} ")
+                    if HAMclockEnable:
+                        if len(grid) < 4 and QRZlookupEnable:
+                            grid = get_grid_square(call)
+                            print(f"QRZ grid: {grid}")
+                        if len(grid) >= 4:                        
+                            url = f"http://{HAMclockHost}:{HAMclockPort}/set_newdx?grid={grid}"
+                            subprocess.Popen(['curl', url])
         except:
             thing = False
 
