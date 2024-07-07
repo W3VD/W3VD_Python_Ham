@@ -60,7 +60,6 @@ def decode_packet(data):
     return pkt.__dict__
 
 def get_key():
-
     url = f"https://xmldata.qrz.com/xml/current/?username={QRZusername};password={QRZpassword}"
     response = requests.get(url)
     if response.status_code == 200:
@@ -77,7 +76,7 @@ def get_key():
         print(f"Failed to retrieve key. Status code: {response.status_code}")
         return None
 
-def get_grid_square(call_sign,):
+def get_grid_square(call_sign):
     key = get_key()
     url = f"https://xmldata.qrz.com/xml/current/?s={key};callsign={call_sign}"
     response = requests.get(url)
@@ -148,7 +147,7 @@ def main():
                             url = f"http://{HAMclockHost}:{HAMclockPort}/set_newdx?grid={grid}"
                             subprocess.Popen(['curl', url])
         except:
-            thing = False
+            pass
 
 if __name__ == '__main__':
     main()
