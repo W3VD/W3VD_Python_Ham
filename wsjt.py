@@ -19,7 +19,7 @@ HAMclockEnable = True
 HAMclockHost = "192.168.3.52"
 HAMclockPort = "8080"
 
-WinKeyerEnable = True
+WinKeyerEnable = False
 WinKeyerHost = "127.0.0.1"
 WinKeyerPort = 7373 # No quote marks, this must be seen as an INT data type
 WordSpeed = "25"
