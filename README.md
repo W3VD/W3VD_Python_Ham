@@ -9,3 +9,5 @@ This script depends upon WSJTXClass.py which you can get at: https://github.com/
 Python module requests is required, you can install with: pip install requests
 
 WSJT-X must be setup for multicast, this allows any host on your subnet to read the traffic. Go to File, settings, reporting tab, change UDP server from 127.0.0.1 to 224.0.2.0. Any valid multicast address may be used instead of 224.0.2.0. You will have to configure any software such as Gridtracker, etc to listen to the same multi cast address instead of 127.0.0.1.
+
+Edit the variables at the top of the file as appropriate.
