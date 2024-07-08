@@ -253,7 +253,7 @@ def main(filename):
     HistoryFile = os.path.join(LogDirectory,"history.csv")
     if not os.path.exists(HistoryFile):
         with open(HistoryFile, 'w') as f:
-            f.write("DateTime,InputFile,PracticeType,WPM,Farnsworth,Count,Correct,Percent,CSVfile\n")
+            f.write("DateTime,InputFile,PaddleInput,EnforceSpace,RemoveString,DisplayText,SoundText,WPM,Farnsworth,Count,Correct,Percent,CSVfile\n")
 
     current_unix_time = int(time.time())
     PracticeType = 'copy'
@@ -264,7 +264,7 @@ def main(filename):
     export_dict_to_csv(strings_dict, file_path_out)
 
     with open(HistoryFile, 'a') as f:
-        f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{filename},{PracticeType},{str(WPM)},{str(Farnsworth)},{str(Count)},{str(CorrectCount)},{str(percentCorrect)},{file_path_out}\n")
+        f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{filename},{PaddleInput},{str(EnforceSpace)},{str(RemoveStringFromList)},{str(DisplayText)},{str(SoundText)},{str(WPM)},{str(Farnsworth)},{str(Count)},{str(CorrectCount)},{str(percentCorrect)},{file_path_out}\n")
 
 if __name__ == "__main__":
     main(InputFile)
