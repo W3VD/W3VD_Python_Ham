@@ -13,7 +13,10 @@ python ~/projects/W3VD_Python_Ham/winKeyerServer.py -p /dev/ttyUSB73
 ```bash
 python c:\projects\W3VD_Python_Ham\winKeyerServer.py -p COM73
 ```
-
+On Linux you may need dialout permissions. I did this on Debian with:
+```bash
+sudo usermod -aG dialout your_username
+```
 # winKeyerClient.py
 
 Used to test the WinKeyer Server, or just play a desired message at a desired speed when you wish. Set the IP and port as appropriate in the script to match that of the TCP port of the WinKeyer Server. Run the script with no paramters. First 4 digits of the message must include the two digit word speed followed by the two digit character speed. For example, if you wanted to send "CQ CQ DE W3VD K" at 5 WPM word speed with a 15 WPM character speed you would enter:
