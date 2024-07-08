@@ -6,6 +6,7 @@ import argparse
 
 # pip install pyserial
 # On linux you will need dial out permissions: sudo usermod -aG dialout your_username
+# K1EL WinKeyer doc: https://www.k1elsystems.com/files/WinkeyUSBman.pdf
 
 DefaultPort = '/dev/ttyUSB0' # Windows uses format 'COM7' 
 DefaultWordSpeed = 25 # Minimum value 5
