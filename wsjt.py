@@ -56,7 +56,7 @@ def decode_packet(data):
     try:
         pkt.Decode()
     except:
-        thing = False
+        pass
     return pkt.__dict__
 
 def get_key():
