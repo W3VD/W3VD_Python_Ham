@@ -1,5 +1,4 @@
 #! /bin/python3
-# https://www.k1elsystems.com/files/WinkeyUSBman.pdf
 import socket
 import struct
 import random
@@ -7,9 +6,12 @@ import time
 import sys
 import argparse
 import csv
+import os
+from datetime import datetime
 
 # Default values
-file = 'strings.txt'
+InputFile = '/home/brenden/cw/char.txt'
+LogDirectory = "/home/brenden/cw/logs"
 WPM = "20"
 Farnsworth = "20"
 EnforceSpace = False
@@ -20,6 +22,7 @@ TXserver_host = '127.0.0.1'
 TXserver_port = 7373
 RXserver_host = '224.0.2.73'
 RXserver_port = 7373
+RemoveStringFromList = True
 
 boolean_dict = {"true": True, "t": True, "yes": True, "y": True, "1": True, "false": False,"f": False,  "no": False,"n": False, "0": False}
 
@@ -32,6 +35,7 @@ parser.add_argument("-c", "--MaxCount", help = "Maximum count of repetitions")
 parser.add_argument("-w", "--wpm", help = "Character Speed WPM")
 parser.add_argument("-F", "--Farnsworth", help = "Farnsworth character speed")
 parser.add_argument("-p", "--PaddleInput", help = "Paddle Input True/False. If False Keyboard will be used Default False")
+parser.add_argument("-r", "--RemoveStringFromList", help = "True/False. If true, as each message is used, it is removed from the list and not will not repeated until the list is exhausted. Default value is True.")
 parser.add_argument("-S", "--EnforceSpace", help = "Enforce space when sending with paddle")
 parser.add_argument("-t", "--DisplayText", help = "Display message text on screen")
 parser.add_argument("-s", "--SoundText", help = "Play message text via WinKeyer")
@@ -44,7 +48,7 @@ parser.add_argument("-rp", "--RXserver_port", help = "Paddle Multicast port")
 args = parser.parse_args()
 
 if args.file:
-    file = args.file
+    InputFile = args.file
 if args.wpm:    
     WPM = args.wpm
 if args.Farnsworth:
@@ -56,9 +60,11 @@ if args.PaddleInput:
 if args.EnforceSpace:
     EnforceSpace = boolean_dict.get(args.EnforceSpace.lower())
 if args.DisplayText:
-    DisplayText = EnforceSpace = boolean_dict.get(args.DisplayText.lower())
+    DisplayText = boolean_dict.get(args.DisplayText.lower())
 if args.SoundText:
-    SoundText = EnforceSpace = boolean_dict.get(args.SoundText.lower())
+    SoundText = boolean_dict.get(args.SoundText.lower())
+if args.RemoveStringFromList:
+    RemoveStringFromList = boolean_dict.get(args.RemoveStringFromList.lower())
 if args.TXserver_host:
     TXserver_host = args.TXserver_host
 if args.TXserver_port:
@@ -229,17 +235,36 @@ def main(filename):
                         CorrectFirstTime = False
 
         Count = Count + 1
-        strings.remove(target_string_spaces)
+        if RemoveStringFromList:
+            strings.remove(target_string_spaces)
         if CorrectFirstTime:
             CorrectCount = CorrectCount + 1
             strings_dict[target_string_spaces] = [(target_string_sent+1),(target_string_correct+1)]
         else:
             strings_dict[target_string_spaces] = [(target_string_sent+1),(target_string_correct)]
     
-    print(f"{round(((CorrectCount/Count)*100),1)}% {CorrectCount} out of {Count} Correct")
+    percentCorrect = round(((CorrectCount/Count)*100),1)
+    print(f"{percentCorrect}% {CorrectCount} out of {Count} Correct")
+    
+    # Export file
+    if not os.path.exists(LogDirectory): 
+        os.makedirs(LogDirectory)
+
+    HistoryFile = os.path.join(LogDirectory,"history.csv")
+    if not os.path.exists(HistoryFile):
+        with open(HistoryFile, 'w') as f:
+            f.write("DateTime,InputFile,PracticeType,WPM,Farnsworth,Count,Correct,Percent,CSVfile\n")
+
     current_unix_time = int(time.time())
-    file_path_out = f"{current_unix_time}-{str(PaddleInput)}.csv"
+    PracticeType = 'copy'
+    if PaddleInput:
+        PracticeType = 'send'
+    csv_file = f"{current_unix_time}-{PracticeType}.csv"
+    file_path_out = os.path.join(LogDirectory,csv_file)
     export_dict_to_csv(strings_dict, file_path_out)
 
+    with open(HistoryFile, 'a') as f:
+        f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{filename},{PracticeType},{str(WPM)},{str(Farnsworth)},{str(Count)},{str(CorrectCount)},{str(percentCorrect)},{file_path_out}\n")
+
 if __name__ == "__main__":
-    main(file)
+    main(InputFile)
