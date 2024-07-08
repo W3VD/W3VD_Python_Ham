@@ -41,7 +41,7 @@ Used to test the WinKeyer Server, or just play a desired message at a desired sp
 
 # morseCodePractice.py
 
-Uses the WinKeyer Server for copy and sending practice. Takes input from a text file with one character/word/message per line. For copy practice the message will played on sidetone, and expected to be typed back via the computer keyboard. If the student wants to hear the message again they may press the backslash key "\". For sending practice you have the option of displaying text on the screen and/or playing the message on sidetone. The student is expected to send the message using the paddle attached to the WinKeyer.
+Uses the WinKeyer Server for copy and sending practice. Takes input from a text file with one character/word/message per line. For copy practice the message will played on sidetone, and expected to be typed back via the computer keyboard. If the student wants to hear the message again they may press the backslash key "\\". For sending practice you have the option of displaying text on the screen and/or playing the message on sidetone. The student is expected to send the message using the paddle attached to the WinKeyer.
 
 For copy or send practice the script will keep track of the amount of times the student gets the message correct on the first try. Final results, and the settings used for each session are stored in CSV files. History.csv will contain cumulative results and settings used for each session. Another CSV file is saved for each session containing scores for each specific message. 
 
