@@ -60,6 +60,8 @@ Default options may be set by editing the vars at the top of the file. Command l
 python morseCodePractice.py --help
 ```
 
+Before first time use, the user MUST set the desired Log Directory variable in the script.
+
 # adifParseCalls.py
 This script reads an ADIF format log file and exports a unique list of callsigns to a text file, for use as input file to morseCodePractice.py.
 
