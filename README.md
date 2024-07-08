@@ -3,6 +3,7 @@ winKeyerServer.py
 Interfaces with a K1EL WinKeyer. Creates a TCP server that other hosts on your network can send messages to be played on sidetone. Each message sent to the WinKeyer includes its own WPM and Farnsworth Character speed. Also echos paddle presses back to the host, which are sent to the network via multicast. You can set a default TTY/COM port in the script, but there is also an optional command line parameter you may use:
 
 python ~/projects/W3VD_Python_Ham/winKeyerServer.py -p /dev/ttyUSB73
+
 python c:\projects\W3VD_Python_Ham\winKeyerServer.py -p COM73
 
 winKeyerClient.py - Stay tuned
