@@ -1,3 +1,5 @@
+All of these scripts require Python v3.6 or later.
+
 # winKeyerServer.py
 
 Interfaces with a K1EL WinKeyer. Creates a TCP server that other hosts on your network can send messages to be played on sidetone. Each message sent to the WinKeyer includes its own WPM and Farnsworth Character speed. Also echos paddle presses back to the host, which are sent to the network via multicast, for the purpose of grading accuracy during sending practice. This is not intended to send CW live on the radio. These tools are intended only to be used with a WinKeyer that is keying an AF code practice oscillator. Another use case for this server is to recieve alerts. For example, a future use case I have in mind is when CW skimmer decodes one of my buddies on the air, or a spotted POTA station, it would play their call sign.
@@ -30,8 +32,6 @@ Stay tuned, the script is written but needs to be cleaned up for presentation on
 # wsjt.py
 
 Examines multicast traffic from WSJT-X. When TX mode is intiated, the DX callsign and grid square are read. If the grid square is present, it will set the DX station grid square in HamClock via the API. If the grid square is NOT present in WSJT-X, a QRZ lookup will be preformed, and the DX station grid will be set in HamClock. Also, the script will send the callsign 3 times to the WinKeyer Server to be played on CW sidetone.
-
-I like F strings, and thus you will need Python 3.6 or later installed.
 
 This script depends upon WSJTXClass.py which you can get at: https://github.com/rstagers/WSJT-X/blob/master/WSJTXClass.py
 
