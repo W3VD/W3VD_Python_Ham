@@ -1,4 +1,4 @@
-All of these scripts require Python v3.6 or later.
+All of these scripts require Python v3.6 or later. These scripts are designed to be cross platform compatible. Despite its name, the K1EL WinKeyer will work with Linux and Mac systems in addition to Windows.
 
 # winKeyerServer.py
 
