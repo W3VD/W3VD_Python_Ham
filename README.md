@@ -1,6 +1,6 @@
 # winKeyerServer.py
 
-Interfaces with a K1EL WinKeyer. Creates a TCP server that other hosts on your network can send messages to be played on sidetone. Each message sent to the WinKeyer includes its own WPM and Farnsworth Character speed. Also echos paddle presses back to the host, which are sent to the network via multicast. 
+Interfaces with a K1EL WinKeyer. Creates a TCP server that other hosts on your network can send messages to be played on sidetone. Each message sent to the WinKeyer includes its own WPM and Farnsworth Character speed. Also echos paddle presses back to the host, which are sent to the network via multicast. This is not intended to send CW live on the radio. These tools are intended only to be used with a WinKeyer that is keying an AF code practice oscillator.
 
 Python module pyserial is required, you can install with: 
 ```bash
@@ -15,7 +15,11 @@ python c:\projects\W3VD_Python_Ham\winKeyerServer.py -p COM73
 ```
 
 # winKeyerClient.py
-Stay tuned
+
+Used to test the WinKeyer Server, or just play a desired message at a desired speed when you wish. Set the IP and port as appropriate in the script and run to match that of the TCP port of the WinKeyer Server. First 4 digits of the message must include the two digit word speed followed by the two digit character speed. For example, if you wanted to send send "CQ CQ DE W3VD K" at 5 WPM word speed with a 15 WPM character speed you would enter:
+```bash
+0515CQ CQ DE W3VD K
+```
 
 # morseCodePractice.py
 Stay tuned
