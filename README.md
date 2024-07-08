@@ -19,6 +19,19 @@ On Linux you may need dialout permissions. I did this on Debian with:
 ```bash
 sudo usermod -aG dialout your_username
 ```
+# ProSigns
+The K1EL WinKeyer has several prosigns mapped directly to ASCII characters. See page 15 of https://www.k1elsystems.com/files/WinkeyUSBman.pdf for more information.
+
+The BK Prosign unfortunately is not currelty mapped in the WinKeyer firmware. winKeyerClient.py and morseCodePractice.py have both been configured, so that when the unmapped ASCII character "&" is sent, the WinKeyer command used for making custom prosigns is used and BK will be played correctly. However, because this is not mapped in the WinKeyer firmware, sending BK on the paddle will result in the character "#" to be echoed back, indicating an unsuccesful decode by the WinKeyer. Hopefully one day K1EL will decide to add BK as a mapped prosign, perhaps more folks contacting him about this will provide encouragement.
+
+Prosign  | WinKeyer ASCII | Flex CWX ASCII
+------------- | ------------- | -------------
+AR | < | +
+BK | | &
+BT | = | =
+KN | : | (
+SK | > | $
+
 # winKeyerClient.py
 
 Used to test the WinKeyer Server, or just play a desired message at a desired speed when you wish. Set the IP and port as appropriate in the script to match that of the TCP port of the WinKeyer Server. Run the script with no paramters. First 4 digits of the message must include the two digit word speed followed by the two digit character speed. For example, if you wanted to send "CQ CQ DE W3VD K" at 5 WPM word speed with a 15 WPM character speed you would enter:
