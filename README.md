@@ -45,7 +45,7 @@ Uses the WinKeyer Server for copy and sending practice. Takes input from a text 
 
 For copy or send practice the script will keep track of the amount of times the student gets the message correct on the first try. Final results, and the settings used for each session are stored in CSV files. History.csv will contain cumulative results and settings used for each session. Another CSV file is saved for each session containing scores for each specific message. 
 
-Copy practice, send with a word speed of 15, character speed of 25, with a count of 20 repetitions.:
+Copy practice, send with a word speed of 15, character speed of 25, with a count of 20 repetitions:
 ```bash
 python morseCodePractice.py -w 15 -F 25 -c 20 -f ~/cw/char.txt
 ```
