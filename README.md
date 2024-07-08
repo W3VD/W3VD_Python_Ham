@@ -63,7 +63,7 @@ python morseCodePractice.py --help
 Before first time use, the user MUST set the desired Log Directory variable in the script.
 
 # adifParseCalls.py
-This script reads an ADIF format log file and exports a unique list of callsigns to a text file, for use as input file to morseCodePractice.py.
+This script reads an ADIF format log file and exports a unique list of callsigns to a text file, for use as an input file to morseCodePractice.py. You will need to edit the input and output file variables in the script.
 
 Python module adif_io is required, you can install with: 
 ```bash
