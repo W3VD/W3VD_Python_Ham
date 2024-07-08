@@ -1,4 +1,4 @@
-winKeyerServer.py
+# winKeyerServer.py
 
 Interfaces with a K1EL WinKeyer. Creates a TCP server that other hosts on your network can send messages to be played on sidetone. Each message sent to the WinKeyer includes its own WPM and Farnsworth Character speed. Also echos paddle presses back to the host, which are sent to the network via multicast. You can set a default TTY/COM port in the script, but there is also an optional command line parameter you may use:
 
@@ -6,11 +6,13 @@ python ~/projects/W3VD_Python_Ham/winKeyerServer.py -p /dev/ttyUSB73
 
 python c:\projects\W3VD_Python_Ham\winKeyerServer.py -p COM73
 
-winKeyerClient.py - Stay tuned
+# winKeyerClient.py
+Stay tuned
 
-morseCodePractice.py - Stay tuned
+# morseCodePractice.py
+Stay tuned
 
-wsjt.py
+# wsjt.py
 
 Examines multicast traffic from WSJT-X. When TX mode is intiated, the DX callsign and grid square are read. If the grid square is present, it will set the DX station grid square in HamClock via the API. If the grid square is NOT present in WSJT-X, a QRZ lookup will be preformed, and the DX station grid will be set in HamClock. Also, the script will send the callsign 3 times to the WinKeyer Server to be played on CW sidetone.
 
