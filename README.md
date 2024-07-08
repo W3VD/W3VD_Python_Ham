@@ -19,7 +19,7 @@ On Linux you may need dialout permissions. I did this on Debian with:
 ```bash
 sudo usermod -aG dialout your_username
 ```
-# ProSigns
+# Prosigns
 The K1EL WinKeyer has several prosigns mapped directly to ASCII characters. See page 15 of https://www.k1elsystems.com/files/WinkeyUSBman.pdf for more information.
 
 The BK Prosign unfortunately is not currently mapped in the WinKeyer firmware. winKeyerClient.py and morseCodePractice.py have both been configured, so that when the unmapped ASCII character "&" is sent, the WinKeyer command used for making custom prosigns is used and BK will be played correctly. However, because this is not mapped in the WinKeyer firmware, sending BK on the paddle will result in the character "#" to be echoed back, indicating an unsuccessful decode by the WinKeyer. Hopefully one day K1EL will decide to add BK as a mapped prosign, perhaps more folks contacting him about this will provide encouragement.
