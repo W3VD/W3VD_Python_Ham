@@ -22,8 +22,8 @@ HAMclockPort = "8080"
 WinKeyerEnable = False
 WinKeyerHost = "127.0.0.1"
 WinKeyerPort = 7373 # No quote marks, this must be seen as an INT data type
-WordSpeed = "25"
-CharacterSpeed = "25"
+WordSpeed = "25" # Minimum value 05, Must be two digits so precede with zero for values 05-09
+CharacterSpeed = "25" # Minimum value 10
 
 # Function to decode packets
 def decode_packet(data):
