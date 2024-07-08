@@ -16,7 +16,7 @@ python c:\projects\W3VD_Python_Ham\winKeyerServer.py -p COM73
 
 # winKeyerClient.py
 
-Used to test the WinKeyer Server, or just play a desired message at a desired speed when you wish. Set the IP and port as appropriate in the script and run to match that of the TCP port of the WinKeyer Server. First 4 digits of the message must include the two digit word speed followed by the two digit character speed. For example, if you wanted to send send "CQ CQ DE W3VD K" at 5 WPM word speed with a 15 WPM character speed you would enter:
+Used to test the WinKeyer Server, or just play a desired message at a desired speed when you wish. Set the IP and port as appropriate in the script to match that of the TCP port of the WinKeyer Server. Run the script with no paramters. First 4 digits of the message must include the two digit word speed followed by the two digit character speed. For example, if you wanted to send send "CQ CQ DE W3VD K" at 5 WPM word speed with a 15 WPM character speed you would enter:
 ```bash
 0515CQ CQ DE W3VD K
 ```
