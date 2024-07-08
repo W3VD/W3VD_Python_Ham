@@ -42,6 +42,14 @@ Used to test the WinKeyer Server, or just play a desired message at a desired sp
 # morseCodePractice.py
 Stay tuned, the script is written but needs to be cleaned up for presentation on GitHub.
 
+# adifParseCalls.py
+This script reads an ADIF format log file and exports a unique list of callsigns to a text file, for use as input file to morseCodePractice.py.
+
+Python module adif_io is required, you can install with: 
+```bash
+pip install adif_io
+```
+
 # wsjt.py
 
 Examines multicast traffic from WSJT-X. When TX mode is intiated, the DX callsign and grid square are read. If the grid square is present, it will set the DX station grid square in HamClock via the API. If the grid square is NOT present in WSJT-X, a QRZ lookup will be preformed, and the DX station grid will be set in HamClock. Also, the script will send the callsign 3 times to the WinKeyer Server to be played on CW sidetone.
