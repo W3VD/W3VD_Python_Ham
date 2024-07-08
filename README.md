@@ -22,7 +22,7 @@ Used to test the WinKeyer Server, or just play a desired message at a desired sp
 ```
 
 # morseCodePractice.py
-Stay tuned
+Stay tuned, the script is written but needs to be cleaned up for presentation on GitHub.
 
 # wsjt.py
 
