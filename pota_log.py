@@ -121,7 +121,7 @@ if len(activated_parks) > 0:
             with open(output_file_path, 'w', encoding='latin-1') as file:
                 file.write(adif_content)
         else:
-            print(f"Activated park length not equal to 7 or 9: {activated_park}")
+            print(f"Activated park length not equal to 7 or 8: {activated_park}")
             exit()
 else:
     output_file_path = os.path.join(default_Output_Directory,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_POTA.adi")
