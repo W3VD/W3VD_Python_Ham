@@ -106,3 +106,5 @@ If your activated multiple parks yourself at the same time, you can specify the 
 python pota_log.py -i ~/brenden/input.adi -a '6789,9876'
 python pota_log.py -i ~/brenden/input.adi -a 'CA-6789,CA-9876'
 ```
+
+For info about setting up N3FJP AClog for POTA please see: https://docs.pota.app/docs/activator_reference/n3fjp_guide.html
