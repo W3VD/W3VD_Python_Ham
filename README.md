@@ -87,7 +87,7 @@ Edit the variables at the top of the file as appropriate.
 
 # pota_log.py
 
-Processes exported ADI files from N3FJP's AClog. Allows you to log 2fer park numbers for P2P as a comma delimited list in the SIG_INFO field. For example, to work a 2fer P2P where the other activator is at park US-1234 and US-4321, you would enter "1234,4321" in SIG_INFO. The script will parse the list, add a prefix of "US-", and create a seperate log entry for each park.
+Processes exported ADI files from N3FJP's AClog. Allows you to log 2fer park numbers for P2P as a comma delimited list in the SIG_INFO field. For example, to work a 2fer P2P where the other activator is at park US-1234 and US-4321, you would enter "1234,4321" in SIG_INFO. The script will parse the list, add a prefix of "US-", and create a seperate log entry for each park. You may also specify the park prefix, example: "CA-1234,CA-4321".
 
 Python module adif_io is required, you can install with: 
 ```bash
@@ -104,4 +104,5 @@ python pota_log.py -i ~/brenden/input.adi
 If your activated multipe parks yourself at the same time, you can specify the -a parameter and supply a comma delimited list of the park numbers you activated. The US- prefix will be added for you if you do not include it. In this case the value in MY_SIG_INFO will be ignored and replaced with the park numbers specified on the command line. A seperate file will be created for each park.:
 ```bash
 python pota_log.py -i ~/brenden/input.adi -a '6789,9876'
+python pota_log.py -i ~/brenden/input.adi -a 'CA-6789,CA-9876'
 ```
