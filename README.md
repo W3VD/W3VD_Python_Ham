@@ -84,3 +84,24 @@ pip install requests
 WSJT-X must be setup for multicast, this allows any host on your subnet to read the traffic. Go to File, settings, reporting tab, change UDP server from 127.0.0.1 to 224.0.2.0. Any valid multicast address may be used instead of 224.0.2.0. You will have to configure any software such as Gridtracker, etc to listen to the same multi cast address instead of 127.0.0.1.
 
 Edit the variables at the top of the file as appropriate.
+
+# pota_log.py
+
+Processes exported ADI files from N3FJP's AClog. Allows you to log 2fer park numbers for P2P as a comma delimited list in the SIG_INFO field. For example, to work a 2fer P2P where the other activator is at park US-1234 and US-4321, you would enter "1234,4321" in SIG_INFO. The script will parse the list, add a prefix of "US-", and create a seperate log entry for each park.
+
+Python module adif_io is required, you can install with: 
+```bash
+pip install adif_io
+```
+
+The script has 3 default settings you may edit, Default US state (-s paramater) you are activating from, default park prefix, and default output directory (-o parameter).
+
+Command line paramter -i is required to specify the input file:
+```bash
+python pota_log.py -i ~/brenden/input.adi
+```
+
+If your activated multipe parks yourself at the same time, you can specify the -a parameter and supply a comma delimited list of the park numbers you activated. The US- prefix will be added for you if you do not include it. In this case the value in MY_SIG_INFO will be ignored and replaced with the park numbers specified on the command line. A seperate file will be created for each park.:
+```bash
+python pota_log.py -i ~/brenden/input.adi -a '6789,9876'
+```
