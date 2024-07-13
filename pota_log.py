@@ -79,7 +79,11 @@ def parse_adif_qsos(file_path, my_park):
         if len(operator) == 0:
             operator = station_callsign
         if len(my_state) == 0:
-            my_state = default_US_State        
+            my_state = default_US_State
+        if len(my_sig) == 0:
+            my_sig = 'POTA'
+        if len(sig) == 0:
+            sig = 'POTA'
 
         if len(sig_info) > 0:
             parks = sig_info.split(',')
