@@ -84,6 +84,7 @@ def parse_adif_qsos(file_path, my_park):
         if len(sig_info) > 0:
             parks = sig_info.split(',')
             for park in parks:
+                park = park.strip()
                 if len(park) < 7:
                     park = f"{default_Park_prefix}{park}"
                 if len(park) == 7 or len(park) == 8:
@@ -106,6 +107,7 @@ adif_header = """https://github.com/W3VD/W3VD_Python_Ham/blob/main/pota_log.py
 
 if len(activated_parks) > 0:
     for activated_park in activated_parks:
+        activated_park = activated_park.strip()
         if len(activated_park) < 7:
             activated_park = f"{default_Park_prefix}{activated_park}"
         if len(activated_park) == 7 or len(activated_park) == 8:
