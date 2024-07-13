@@ -95,7 +95,7 @@ def parse_adif_qsos(file_path, my_park):
                     park = park.upper()
                     parsed_qsos = parsed_qsos + create_adif_record(station_callsign,operator,call,qso_date,time_on,band,mode,submode,my_sig,my_sig_info,sig,park,my_state)
                 else:
-                    print(f"Park length not equal to 7 or 9: {call} {park}")
+                    print(f"Park length not equal to 7 or 8: {call} {park}")
                     exit()
         else:
             parsed_qsos = parsed_qsos + create_adif_record(station_callsign,operator,call,qso_date,time_on,band,mode,submode,my_sig,my_sig_info,sig,sig_info,my_state)
