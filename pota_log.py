@@ -23,10 +23,9 @@ else:
     exit()
 if args.output:
     default_Output_Directory = args.output
-else:
-    if not os.path.exists(default_Output_Directory):
-        print("Output directory does not exist")
-        exit()
+if not os.path.exists(default_Output_Directory):
+    print("Output directory does not exist")
+    exit()
 if args.activated:
     activated_parks = args.activated.split(',')
 else:
