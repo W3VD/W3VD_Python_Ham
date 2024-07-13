@@ -101,7 +101,7 @@ Command line paramter -i is required to specify the input file:
 python pota_log.py -i ~/brenden/input.adi
 ```
 
-If your activated multipe parks yourself at the same time, you can specify the -a parameter and supply a comma delimited list of the park numbers you activated. The US- prefix will be added for you if you do not include it. In this case the value in MY_SIG_INFO will be ignored and replaced with the park numbers specified on the command line. A seperate file will be created for each park.:
+If your activated multiple parks yourself at the same time, you can specify the -a parameter and supply a comma delimited list of the park numbers you activated. The US- prefix will be added for you if you do not include it. In this case the value in MY_SIG_INFO will be ignored and replaced with the park numbers specified on the command line. A seperate file will be created for each park.:
 ```bash
 python pota_log.py -i ~/brenden/input.adi -a '6789,9876'
 python pota_log.py -i ~/brenden/input.adi -a 'CA-6789,CA-9876'
