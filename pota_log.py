@@ -10,8 +10,9 @@ default_Output_Directory = "/home/brenden/pota_logs"
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", help = "Input File")
 parser.add_argument("-o", "--output", help = "Output Directory")
-parser.add_argument("-a", "--activated", help = 'Activated multiple parks, accepts comma delimited list. Example: python pota_log.py -m "1234,4321"')
+parser.add_argument("-a", "--activated", help = 'Activated multiple parks, accepts comma delimited list. Example: python pota_log.py -a "1234,4321"')
 parser.add_argument("-s", "--state", help = "Activated State")
+parser.add_argument("-m", "--multiop", help = 'Multi Operator/Same log file, accepts comma delimited list. Example: python pota_log.py -m "W3VD,W6XRL4"')
 args = parser.parse_args()
 if args.input:
     input_file_path = args.input
@@ -51,7 +52,7 @@ def create_adif_record(station_callsign, operator, call, qso_date, time_on, band
              "<EOR>\n"
     return record
 
-def parse_adif_qsos(file_path, my_park):
+def parse_adif_qsos(file_path, my_park, operator_call):
     with open(file_path, 'r', encoding='latin-1') as file:
         adif_string = file.read()
     qsos, header = adif_io.read_from_string(adif_string)
@@ -83,6 +84,10 @@ def parse_adif_qsos(file_path, my_park):
             my_sig = 'POTA'
         if len(sig) == 0:
             sig = 'POTA'
+        if(len(operator_call)) > 0:
+            operator = operator_call
+            station_callsign = operator_call
+
 
         if len(sig_info) > 0:
             parks = sig_info.split(',')
@@ -101,29 +106,42 @@ def parse_adif_qsos(file_path, my_park):
     
     return parsed_qsos
 
-# Start logic
-adif_header = """https://github.com/W3VD/W3VD_Python_Ham/blob/main/pota_log.py
-<adif_ver:3>1.0
-<programid:16>W3VD POTA script
-<programversion:3>1.0
-<eoh>\n"""
+def WriteADIFfile(operator_call):
+    adif_header = """https://github.com/W3VD/W3VD_Python_Ham/blob/main/pota_log.py
+    <adif_ver:3>1.0
+    <programid:16>W3VD POTA script
+    <programversion:3>1.0
+    <eoh>\n"""
 
-if len(activated_parks) > 0:
-    for activated_park in activated_parks:
-        activated_park = activated_park.strip()
-        if len(activated_park) < 7:
-            activated_park = f"{default_Park_prefix}{activated_park}"
-        if len(activated_park) == 7 or len(activated_park) == 8:
-            activated_park = activated_park.upper()      
-            output_file_path = os.path.join(default_Output_Directory,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_{activated_park}_POTA.adi")
-            adif_content = adif_header + parse_adif_qsos(input_file_path, activated_park)
-            with open(output_file_path, 'w', encoding='latin-1') as file:
-                file.write(adif_content)
+    if len(activated_parks) > 0:
+        for activated_park in activated_parks:
+            activated_park = activated_park.strip()
+            if len(activated_park) < 7:
+                activated_park = f"{default_Park_prefix}{activated_park}"
+            if len(activated_park) == 7 or len(activated_park) == 8:
+                activated_park = activated_park.upper()
+                if(len(operator_call) > 0):
+                    output_file_path = os.path.join(default_Output_Directory,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_{operator_call}_{activated_park}_POTA.adi")
+                else:
+                    output_file_path = os.path.join(default_Output_Directory,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_{activated_park}_POTA.adi")
+                adif_content = adif_header + parse_adif_qsos(input_file_path, activated_park, operator_call)
+                with open(output_file_path, 'w', encoding='latin-1') as file:
+                    file.write(adif_content)
+            else:
+                print(f"Activated park length not equal to 7 or 8: {activated_park}")
+                exit()
+    else:
+        if(len(operator_call) > 0):
+            output_file_path = os.path.join(default_Output_Directory,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_{operator_call}_POTA.adi")
         else:
-            print(f"Activated park length not equal to 7 or 8: {activated_park}")
-            exit()
+            output_file_path = os.path.join(default_Output_Directory,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_POTA.adi")
+        adif_content = adif_header + parse_adif_qsos(input_file_path, "", operator_call)
+        with open(output_file_path, 'w', encoding='latin-1') as file:
+            file.write(adif_content)
+
+# Start logic
+if args.multiop:
+    for operator_call in args.multiop.split(','):
+        WriteADIFfile(operator_call)
 else:
-    output_file_path = os.path.join(default_Output_Directory,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_POTA.adi")
-    adif_content = adif_header + parse_adif_qsos(input_file_path, "")
-    with open(output_file_path, 'w', encoding='latin-1') as file:
-        file.write(adif_content)
+    WriteADIFfile("")
