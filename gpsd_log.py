@@ -142,8 +142,8 @@ def create_adif_record(station_callsign, operator, my_state, my_cnty, MY_LAT, MY
              f"<CALL:{len(call)}>{call} " \
              f"<QSO_DATE:{len(qso_date)}>{qso_date} " \
              f"<TIME_ON:{len(time_on)}>{time_on} " \
-             f"<FREQ:{len(band)}>{band} " \
-             f"<BAND:{len(freq)}>{freq} " \
+             f"<FREQ:{len(freq)}>{freq} " \
+             f"<BAND:{len(band)}>{band} " \
              f"<MODE:{len(mode)}>{mode} " \
              f"<SUBMODE:{len(submode)}>{submode} " \
              f"<RST_SENT:{len(RST_Sent)}>{RST_Sent} " \
