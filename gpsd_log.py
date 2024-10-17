@@ -6,6 +6,7 @@ import argparse
 import os
 from datetime import datetime, timezone
 import csv
+import re
 
 server = '192.168.73.3'
 default_Output_Directory = "C:\\Users\\brenden\\Documents\\POTA_logs"
@@ -32,8 +33,8 @@ if not os.path.exists(default_Output_Directory):
     print("Output directory does not exist")
     exit()
 if args.calls:
-    calls = args.calls
-    if not os.path.isfile(input_file_path):
+    station_callsign_list = args.calls.split(',')
+    if len(station_callsign_list) == 0:
         print("No call signs specified")
         exit()
 else:
@@ -84,7 +85,7 @@ CQ_ZONE_MAPPING = {
     'GA': 5, 'NC': 5, 'SC': 5, 'VA': 5, 'WV': 5
 }
 
-adif_header = """https://github.com/W3VD/W3VD_Python_Ham/blob/main/rover_log.py
+adif_header = """https://github.com/W3VD/W3VD_Python_Ham/blob/main/gpsd_log.py
 <adif_ver:3>1.0
 <programid:16>W3VD Rover Script
 <programversion:3>1.0
@@ -107,16 +108,19 @@ def get_gridsquare(lat, lon):
     return mh.to_maiden(lat, lon)
 
 def get_location_info(lat, lon):
-    geolocator = Nominatim(user_agent="gpsd_script")
-    location = geolocator.reverse((lat, lon), exactly_one=True, language="en")
-    if location and 'address' in location.raw:
-        address = location.raw['address']
-        state = address.get('state', 'Unknown')
-        county = address.get('county', 'Unknown')
-        county = county.replace(" County", "") if county else "Unknown"
-        state_abbr = STATE_ABBREVIATIONS.get(state, 'Unknown')
-        return state_abbr, county
-    else:
+    try:
+        geolocator = Nominatim(user_agent="gpsd_script")
+        location = geolocator.reverse((lat, lon), exactly_one=True, language="en")
+        if location and 'address' in location.raw:
+            address = location.raw['address']
+            state = address.get('state', 'Unknown')
+            county = address.get('county', 'Unknown')
+            county = county.replace(" County", "") if county else "Unknown"
+            state_abbr = STATE_ABBREVIATIONS.get(state, 'Unknown')
+            return state_abbr, county
+        else:
+            return None, None
+    except:
         return None, None
 
 def calculate_itu_zone(state_abbr, lon):
@@ -129,7 +133,31 @@ def calculate_itu_zone(state_abbr, lon):
 def calculate_cq_zone(state_abbr):
     return CQ_ZONE_MAPPING.get(state_abbr, None)
 
+def calculate_prefix(call_sign):
+    # Call sign prefix extraction using regex
+    match = re.match(r'^([A-Z0-9]+)', call_sign)
+    
+    if match:
+        prefix = match.group(1)
+        
+        # Adjust prefix based on some common rules
+        # Example: US callsigns have 1 or 2 letters followed by a digit
+        if len(prefix) >= 2 and prefix[1].isdigit():
+            return prefix[:2]  # e.g., K1ABC -> K1
+        elif len(prefix) >= 3 and prefix[2].isdigit():
+            return prefix[:3]  # e.g., ZS6XYZ -> ZS6
+        
+        return prefix  # Default case if no other rules apply
+    else:
+        return None
+
 def create_adif_record(station_callsign, operator, my_state, my_cnty, MY_LAT, MY_LON, MY_GRIDSQUARE, MY_CQ_ZONE, MY_ITU_ZONE, call, qso_date, time_on, band, freq, mode, submode, cont, country, DXCC, CQz, ITUz, Pfx, RST_Sent, RST_Rcvd):
+    if station_callsign == call:
+        
+        if len(station_callsign_list) == 2:        
+            call = next(item for item in station_callsign_list if item != station_callsign)
+            Pfx = calculate_prefix(call)
+
     record = f"<STATION_CALLSIGN:{len(station_callsign)}>{station_callsign} " \
              f"<OPERATOR:{len(operator)}>{operator} " \
              f"<MY_STATE:{len(my_state)}>{my_state} " \
@@ -228,7 +256,7 @@ else:
     print("Failed to retrieve GPS data.")
 
 print(f"Input File: {input_file_path}")
-print(f"Callsigns: {calls}")
+print(f"Callsigns: {station_callsign_list}")
 print(f"Parks activated: {args.activated}")
 print("")
 
@@ -240,7 +268,7 @@ if user_input.lower() == 'y':
     now_utc = datetime.now(timezone.utc)
     utc_YYYY_MM_DD = str(now_utc.strftime('%Y-%m-%d'))
     formatted_datetime = now_utc.strftime('%Y-%m-%d %H:%M:%S')
-    for call in calls.split(','):
+    for call in station_callsign_list:
         output_dir = os.path.join(default_Output_Directory,call,utc_YYYY_MM_DD)
         cummulative_log = os.path.join(output_dir,f"{call}.adi")
         lotw_log = os.path.join(output_dir,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_{call}_LoTW.adi")

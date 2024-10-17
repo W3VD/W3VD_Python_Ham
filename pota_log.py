@@ -13,6 +13,7 @@ parser.add_argument("-o", "--output", help = "Output Directory")
 parser.add_argument("-a", "--activated", help = 'Activated multiple parks, accepts comma delimited list. Example: python pota_log.py -a "1234,4321"')
 parser.add_argument("-s", "--state", help = "Activated State")
 parser.add_argument("-m", "--multiop", help = 'Multi Operator/Same log file, accepts comma delimited list. Example: python pota_log.py -m "W3VD,W6XRL4"')
+
 args = parser.parse_args()
 if args.input:
     input_file_path = args.input
@@ -33,9 +34,16 @@ else:
     activated_parks = ""
 if args.state:
     default_US_State = args.state
+if args.multiop:
+    station_callsign_list = args.multiop.split(',')
 
 # Functions
 def create_adif_record(station_callsign, operator, call, qso_date, time_on, band, mode, submode, my_sig, my_sig_info, sig, sig_info, my_state):
+    if station_callsign == call:
+        if args.multiop:
+            if len(station_callsign_list) == 2:
+                call = next(item for item in station_callsign_list if item != station_callsign)
+
     record = f"<STATION_CALLSIGN:{len(station_callsign)}>{station_callsign} " \
              f"<OPERATOR:{len(operator)}>{operator} " \
              f"<CALL:{len(call)}>{call} " \
@@ -141,7 +149,7 @@ def WriteADIFfile(operator_call):
 
 # Start logic
 if args.multiop:
-    for operator_call in args.multiop.split(','):
+    for operator_call in station_callsign_list:
         WriteADIFfile(operator_call)
 else:
     WriteADIFfile("")
