@@ -292,6 +292,6 @@ if user_input.lower() == 'y':
             file.write(lotw_qsos)
         
         if args.activated:
-            os.system(f"python pota_log.py -i {input_file_path} -o {output_dir} -a {args.activated} -m {call} -s {state_abbr}")
+            os.system(f"python pota_log.py -i {input_file_path} -o {output_dir} -a {args.activated} -m {args.calls} -s {state_abbr}")
 else:
     exit()
