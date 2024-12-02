@@ -9,7 +9,7 @@ import csv
 import re
 
 server = '192.168.73.3'
-default_Output_Directory = "C:\\Users\\brenden\\Documents\\POTA_logs"
+default_Output_Directory = "C:\\Users\\brenden.BKM\\Documents\\POTA_logs"
 
 # Process command line arguments
 parser = argparse.ArgumentParser()
@@ -17,6 +17,8 @@ parser.add_argument("-i", "--input", help = "Required: Input File")
 parser.add_argument("-c", "--calls", help = 'Required: Operator List, accepts comma delimited list. Example: python pota_log.py -m "W3VD,W6XRL4"')
 parser.add_argument("-o", "--output", help = "Optional: Output Directory")
 parser.add_argument("-a", "--activated", help = 'Optional: Activated multiple parks, accepts comma delimited list. Example: python pota_log.py -a "1234,4321"')
+parser.add_argument("-l", "--lat", help = "Optional: Lattitude")
+parser.add_argument("-L", "--lon", help = 'Optional: Longitude')
 
 args = parser.parse_args()
 if args.input:
@@ -227,7 +229,11 @@ def append_to_csv(file_name, row_data, header=None):
         writer.writerow(row_data)
 
 # Start Script logic
-lat, lon = get_gps_data(server)
+if args.lat and args.lon:
+    lat = float(args.lat)
+    lon = float(args.lon)
+else:
+    lat, lon = get_gps_data(server)
     
 if lat is not None and lon is not None:
     print(f"Latitude: {lat}, Longitude: {lon}")
@@ -270,7 +276,7 @@ if user_input.lower() == 'y':
     formatted_datetime = now_utc.strftime('%Y-%m-%d %H:%M:%S')
     for call in station_callsign_list:
         output_dir = os.path.join(default_Output_Directory,call,utc_YYYY_MM_DD)
-        cummulative_log = os.path.join(output_dir,f"{call}.adi")
+        cummulative_log = os.path.join(output_dir,f"{call}-{utc_YYYY_MM_DD}.adi")
         lotw_log = os.path.join(output_dir,f"{os.path.splitext(os.path.basename(input_file_path))[0]}_{call}_LoTW.adi")
         csv_file = os.path.join(output_dir,f"Locations_{call}.csv")
 
